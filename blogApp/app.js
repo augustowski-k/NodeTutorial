@@ -35,6 +35,38 @@ app.get('/blogs/new', function (req, res) {
   res.render('new');
 });
 
+app.post('/blogs', function (req, res) {
+  var blogData = req.body.blog;
+  Blog.create(blogData, function (err, blog) {
+    if (err) {
+      console.log(err);
+      res.send('Something went wrong');
+    } else {
+      res.redirect('/blogs');
+    }
+  });
+});
+
+app.get('/blogs/:id', function (req, res) {
+  Blog.findOne({ _id: req.params.id }, function (err, postData) {
+    if (err) {
+      res.send('Nothing interesting here:' + err);
+    } else {
+      res.render('show', postData);
+    }
+  });
+});
+
+app.get('/blogs/:id/edit', function (req, res) {
+  Blog.findOne({ _id: req.params.id }, function (err, postData) {
+    if (err) {
+      res.send('Nothing interesting here:' + err);
+    } else {
+      res.render('edit', postData);
+    }
+  });
+});
+
 app.listen(80, function () {
   console.log('Blog application started');
 });

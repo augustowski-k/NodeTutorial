@@ -1,0 +1,19 @@
+<% include partials/header %>
+
+<div class="ui text container main segment">
+  <div class="ui header huge"><%= title %></div>
+  <div class="ui top attached">
+    <div class="item">
+      <img class="ui centered rounded image" src="<%= img %>" alt="">
+      <div class="content">
+        <p><%= created.toDateString() %></p>
+      </div>
+      <div class="description">
+        <p><%= body %></p>
+      </div>
+      <a class="ui button basic blue" href="/blogs/<%= _id %>/edit"> Edit </a>
+    </div>
+  </div>
+</div>
+
+<% include partials/footer %>

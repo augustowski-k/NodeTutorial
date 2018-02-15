@@ -1,19 +1,19 @@
 <% include partials/header %>
 
 <div class="ui main text container segment">
-  <div class="ui huge header">New blog</div>
+  <div class="ui huge header">Edit blog post</div>
   <form class="ui form" action="/blogs" method="POST">
     <div class="field">
       <label>Title</label>
-      <input type="text" name="blog[title]" placeholder="title">
+      <input type="text" name="blog[title]" value="<%= title %>">
     </div>
     <div class="field">
       <label>Image url</label>
-      <input type="text" name="blog[img]" placeholder="image Url">
+      <input type="text" name="blog[img]" placeholder="image Url" value="<%= img %>">
     </div>
     <div class="field">
       <label>Contents</label>
-      <textarea name="blog[body]"></textarea>
+      <textarea name="blog[body]"><%= body %></textarea>
     </div>
     <input class="ui violet basic button" type="submit" value="post">
   </form>
