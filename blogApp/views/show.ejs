@@ -9,9 +9,12 @@
         <p><%= created.toDateString() %></p>
       </div>
       <div class="description">
-        <p><%= body %></p>
+        <p><%- body %></p>
       </div>
       <a class="ui button basic blue" href="/blogs/<%= _id %>/edit"> Edit </a>
+      <form class="inline" action="/blogs/<%= _id %>/?_method=DELETE" method="POST">
+        <input type="submit" class="ui button basic orange" value="Delete" />
+      </form>
     </div>
   </div>
 </div>

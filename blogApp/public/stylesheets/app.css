@@ -1,11 +1,21 @@
 i.icon {
   font-size: 2em;
+  padding: auto;
 }
+
+.button i.icon{
+  font-size: 1em;
+}
+
 .container.main {
   margin-top: 5em;
   width: 70%;
 }
 
-.container img {
+.item img {
   width: 100%;
+}
+
+.inline {
+  display: inline;
 }
