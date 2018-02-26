@@ -7,6 +7,11 @@
   <p><%= description %></p>
 
   <a class="btn btn-md btn-default" href="/campgrounds">Go back</a>
+
+  <% comments.forEach(function (comment) { %>
+    <p><%= comment.content %></p>
+    <h5><%= comment.author %></h5>
+  <% }); %>
 </div>
 
 <% include partials/footer %>
