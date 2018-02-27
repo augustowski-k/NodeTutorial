@@ -1,0 +1,21 @@
+<% include ../partials/header %>
+
+<div class="container">
+  <h1><%= name %></h1>
+  <img style="width: 100%" src="<%= imgUrl %>" alt="">
+  <br>
+  <p><%= description %></p>
+
+  <a class="btn btn-md btn-default" href="/campgrounds">Go back</a>
+
+  <a href="/campgrounds/<%= _id %>/comments/new" class="btn btn-md btn-default">Add a comment</a>
+
+  <% comments.forEach(function (comment) { %>
+    <div class="comment">
+      <p><%= comment.content %></p>
+      <h5><%= comment.author %></h5>
+    </div>
+  <% }); %>
+</div>
+
+<% include ../partials/footer %>
