@@ -1,16 +1,31 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var passport = require('passport');
+var LocalStrategy = require('passport-local');
+var expressSession = require('express-session');
 var Campground = require('./models/campground');
 var Comment = require('./models/comment');
+var User = require('./models/user');
 var seedDB = require('./seeds');
 
-seedDB();
 mongoose.connect('mongodb://localhost/yelp_camp');
+seedDB();
+
 var app = express();
+app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.set('view engine', 'ejs');
+app.use(expressSession({
+  secret: 'secret should be a secret... always',
+  resave: false,
+  saveUninitialized: false,
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy({ usernameField: 'email', }, User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 app.get('/', function (req, res) {
   res.render('home');
@@ -91,6 +106,35 @@ app.post('/campgrounds/:id/comments', function (req, res) {
     }
   });
 });
+
+app.get('/register', function (req, res) {
+  res.render('register');
+});
+
+app.post('/register', function (req, res) {
+  var newUser = new User({ email: req.body.email });
+  User.register(newUser, req.body.password, function (err, user) {
+    if (err) {
+      console.log(err);
+      res.redirect('/register');
+      return;
+    }
+
+    passport.authenticate('local')(req, res, function () {
+      res.redirect('/campgrounds');
+    });
+  });
+});
+
+app.get('/login', function (req, res) {
+  res.render('login');
+});
+
+app.post('/login', passport.authenticate('local',
+  {
+    successRedirect: '/campgrounds',
+    failureRedirect: '/login',
+  }), function (req, res) {});
 
 app.listen(80, function () {
   console.log('yelp server started');
