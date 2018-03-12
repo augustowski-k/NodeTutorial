@@ -14,7 +14,7 @@ var campgroundRoutes = require('./routes/campgrounds');
 var commentRoutes = require('./routes/comments');
 
 mongoose.connect('mongodb://localhost/yelp_camp');
-seedDB();
+//seedDB();
 
 var app = express();
 app.set('view engine', 'ejs');
@@ -25,6 +25,7 @@ app.use(expressSession({
   resave: false,
   saveUninitialized: false,
 }));
+
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy({usernameField: 'email',}, User.authenticate()));

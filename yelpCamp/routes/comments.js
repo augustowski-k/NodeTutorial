@@ -16,6 +16,10 @@ router.get('/new', isLoggedIn, function(req, res) {
 
 router.post('/', isLoggedIn, function(req, res) {
   var comment = req.body.comment;
+  comment.author = {
+    id: req.user._id,
+    email: req.user.email
+  };
   Campground.findById(req.params.id, function(err, camp) {
     if (err) {
       console.log(err);
