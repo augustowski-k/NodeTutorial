@@ -17,8 +17,15 @@
           <h4 class="pull-right">$9.00/night</h4>
           <h4><a><%= name %> </a><span style="font-size: 0.7em;">by <%= owner.email %></span></h4>
           <p><%= description %></p>
+          <% if(owner.id.equals(currentUser._id)){ %>
+            <a href="/campgrounds/<%= _id %>/edit" class="btn btn-md btn-info">Edit campground</a>
+            <form class="inline" action="/campgrounds/<%= _id %>?_method=DELETE" method="POST">
+              <button class="btn btn-md btn-danger" type="submit">Delete campground</button>
+            </form>
+          <% } %>
         </div>
       </div>
+      <a class="btn btn-md btn-default" href="/campgrounds">Go back</a>
       <br>
       <div class="well">
         <div class="text-right">
@@ -35,7 +42,6 @@
           </div>
         <% }); %>
       </div>
-      <a class="btn btn-md btn-default" href="/campgrounds">Go back</a>
     </div>
   </div>
 </div>

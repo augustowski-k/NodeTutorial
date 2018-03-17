@@ -2,7 +2,7 @@
 
 <h1>Login</h1>
 
-<form action="/login" method="POST">
+<form action="/login?url=<%= url %>" method="POST">
   <input type="email" name="email" placeholder="Email address">
   <input type="password" name="password" placeholder="password">
   <button>Login</button>

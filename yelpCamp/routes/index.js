@@ -28,13 +28,18 @@ router.post('/register', function(req, res) {
 });
 
 router.get('/login', function(req, res) {
-  res.render('login');
+  res.render('login', req.query);
 });
 
 router.post('/login', passport.authenticate('local', {
-  successRedirect: '/campgrounds',
   failureRedirect: '/login',
-}), function(req, res) {});
+}), function(req, res) {
+  if(req.query.url){
+    res.redirect(req.query.url);
+  }else {
+    res.redirect('/campgrounds');
+  }
+});
 
 router.get('/logout', function(req, res) {
   req.logout();

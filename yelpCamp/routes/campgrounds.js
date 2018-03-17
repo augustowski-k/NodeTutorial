@@ -13,10 +13,7 @@ router.get('/', function(req, res) {
 });
 
 router.post('/', isLoggedIn, function(req, res) {
-  var name = req.body.name;
-  var imgUrl = req.body.imgUrl;
-  var description = req.body.description;
-  var newCamp = {name: name, imgUrl: imgUrl, description: description};
+  var newCamp = req.body.campground;
 
   newCamp.owner = {
     id: req.user._id,
@@ -50,11 +47,41 @@ router.get('/:id', function(req, res) {
     });
 });
 
+router.get('/:id/edit', function(req,res) {
+  Campground.findById(req.params.id, function(err, campground) {
+    if(err){
+      console.log(err);
+    }else {
+        res.render('campgrounds/edit', campground);
+    }
+  });
+});
+
+router.put('/:id', function(req, res) {
+  Campground.findByIdAndUpdate(req.params.id, req.body.campground, function(err,campground) {
+    if(err){
+      console.log(err);
+    }else {
+      res.redirect('/campgrounds/' + req.params.id);
+    }
+  });
+});
+
+router.delete('/:id', function(req, res) {
+  Campground.findOneAndRemove(req.params.id, function(err){
+    if(err){
+      console.log(err);
+    }else {
+      res.redirect('/campgrounds');
+    }
+  });
+});
+
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
   }
-  res.redirect('/login');
+  res.redirect('/login/?url=' + req.originalUrl);
 }
 
 module.exports = router;
