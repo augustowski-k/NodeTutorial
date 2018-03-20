@@ -2,7 +2,14 @@
 
 <h1>Login</h1>
 
-<form action="/login?url=<%= url %>" method="POST">
+<form
+  <% if(typeof url !== 'undefined') { %>
+    action="/login?url=<%= url %>"
+  <% }else {%>
+    action="/login"
+  <% } %>
+  method="POST">
+
   <input type="email" name="email" placeholder="Email address">
   <input type="password" name="password" placeholder="password">
   <button>Login</button>
