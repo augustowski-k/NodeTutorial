@@ -1,10 +1,11 @@
 var express = require('express');
 var Campground = require('../models/campground');
 var Comment = require('../models/comment');
+var middleware = require('../middleware/index');
 
 var router = express.Router({mergeParams: true});
 
-router.get('/new', isLoggedIn, function(req, res) {
+router.get('/new', middleware.isLoggedIn, function(req, res) {
   Campground.findById(req.params.id, function(err, campground) {
     if (err) {
       console.log(err);
@@ -14,7 +15,7 @@ router.get('/new', isLoggedIn, function(req, res) {
   });
 });
 
-router.post('/', isLoggedIn, function(req, res) {
+router.post('/', middleware.isLoggedIn, function(req, res) {
   var comment = req.body.comment;
   comment.author = {
     id: req.user._id,
@@ -42,11 +43,11 @@ router.post('/', isLoggedIn, function(req, res) {
   });
 });
 
-router.get('/:comId/edit', checkCommentOwnership, function(req, res){
+router.get('/:comId/edit', middleware.checkCommentOwnership, function(req, res){
   res.render('comments/edit', {comment: req.comment, campId: req.params.id});
 });
 
-router.put('/:comId', checkCommentOwnership, function(req, res) {
+router.put('/:comId', middleware.checkCommentOwnership, function(req, res) {
   console.log(req.body.comment);
   Comment.findByIdAndUpdate(req.params.comId, req.body.comment, function(err, comment){
     if(err){
@@ -57,7 +58,7 @@ router.put('/:comId', checkCommentOwnership, function(req, res) {
   });
 });
 
-router.delete('/:comId', checkCommentOwnership, function(req, res) {
+router.delete('/:comId', middleware.checkCommentOwnership, function(req, res) {
   req.comment.remove(function(err, com){
     if(err){
       res.redirect('back');
@@ -66,29 +67,5 @@ router.delete('/:comId', checkCommentOwnership, function(req, res) {
     }
   });
 });
-
-function isLoggedIn(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  res.redirect('/login/?url=' + req.originalUrl);
-}
-
-function checkCommentOwnership(req, res, next){
-  if(req.isAuthenticated()){
-    Comment.findById(req.params.comId, function(err, comment){
-      if(err){
-        res.redirect('back');
-      }else if(comment.author.id.equals(req.user._id)){
-        req.comment = comment;
-        next();
-      }else{
-        res.redirect('back');
-      }
-    });
-  }else {
-    res.redirect('back');
-  }
-}
 
 module.exports = router;
