@@ -24,3 +24,8 @@
         </div>
       </div>
     </nav>
+
+    <div class="alert alert-success" role="alert" <%= flashSuccess && flashSuccess.length > 0 ? '' : 'hidden'; %>><%= flashSuccess %></div>
+    <div class="alert alert-info" role="alert" <%= flashInfo && flashInfo.length > 0 ? '' : 'hidden'; %>><%= flashInfo %></div>
+    <div class="alert alert-warning" role="alert" <%= flashWarning && flashWarning.length > 0 ? '' : 'hidden'; %>><%= flashWarning %></div>
+    <div class="alert alert-danger" role="alert" <%= flashError && flashError.length > 0 ? '' : 'hidden'; %>><%= flashError %></div>

@@ -14,9 +14,9 @@
       <div class="thumbnail">
         <img class="img-responsive" src="<%= imgUrl %>" alt="">
         <div class="caption-full">
-          <h4 class="pull-right">$9.00/night</h4>
+          <h4 class="pull-right">$ <%= price %> / night</h4>
           <h4><a><%= name %> </a><span style="font-size: 0.7em;">by <%= owner.email %></span></h4>
-          <p><%= description %></p>
+          <p><%- description %></p>
           <% if(currentUser && owner.id.equals(currentUser._id)){ %>
             <a href="/campgrounds/<%= _id %>/edit" class="btn btn-md btn-info">Edit campground</a>
             <form class="inline" action="/campgrounds/<%= _id %>?_method=DELETE" method="POST">

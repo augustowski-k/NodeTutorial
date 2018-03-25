@@ -8,7 +8,8 @@ var campgroundSchema = new mongoose.Schema({
   owner: {
     id: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     email: String
-  }
+  },
+  price: String
 });
 var Campground = mongoose.model('Campground', campgroundSchema);
 

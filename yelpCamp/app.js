@@ -5,6 +5,8 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local');
 var expressSession = require('express-session');
 var methodOverride = require('method-override');
+var flash = require('connect-flash');
+
 var Campground = require('./models/campground');
 var Comment = require('./models/comment');
 var User = require('./models/user');
@@ -20,6 +22,7 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(methodOverride('_method'));
+app.use(flash());
 app.use(expressSession({
   secret: 'secret should be a secret... always',
   resave: false,
@@ -34,6 +37,10 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use(function(req, res, next) {
   res.locals.currentUser = req.user;
+  res.locals.flashSuccess = req.flash('success');
+  res.locals.flashInfo = req.flash('info');
+  res.locals.flashWarning = req.flash('warning');
+  res.locals.flashError = req.flash('error');
   next();
 });
 

@@ -7,8 +7,10 @@ var router = express.Router({mergeParams: true});
 
 router.get('/new', middleware.isLoggedIn, function(req, res) {
   Campground.findById(req.params.id, function(err, campground) {
-    if (err) {
-      console.log(err);
+    if(err) {
+      req.flash('error',
+  typeof err === 'object' ? err.message : err);
+      res.redirect('back');
     } else {
       res.render('comments/new', {camp: campground});
     }
@@ -22,18 +24,25 @@ router.post('/', middleware.isLoggedIn, function(req, res) {
     email: req.user.email
   };
   Campground.findById(req.params.id, function(err, camp) {
-    if (err) {
-      console.log(err);
+    if(err) {
+      req.flash('error',
+  typeof err === 'object' ? err.message : err);
+      res.redirect('back');
     } else {
       Comment.create(comment, function(err, newComment) {
-        if (err) {
-          console.log(err);
+        if(err) {
+          req.flash('error',
+  typeof err === 'object' ? err.message : err);
+          res.redirect('back');
         } else {
           camp.comments.push(newComment._id);
           camp.save(function(err, editedCamp) {
-            if (err) {
-              console.log(err);
+            if(err) {
+              req.flash('error',
+  typeof err === 'object' ? err.message : err);
+              res.redirect('back');
             } else {
+              req.flash('success', 'You successfuly added a comment');
               res.redirect('/campgrounds/' + editedCamp._id);
             }
           });
@@ -51,8 +60,10 @@ router.put('/:comId', middleware.checkCommentOwnership, function(req, res) {
   console.log(req.body.comment);
   Comment.findByIdAndUpdate(req.params.comId, req.body.comment, function(err, comment){
     if(err){
+      req.flash('err', err.message);
       res.redirect('back');
     }else{
+      req.flash('success', 'You successfuly edited a comment');
       res.redirect('/campgrounds/' + req.params.id);
     }
   });
@@ -61,8 +72,10 @@ router.put('/:comId', middleware.checkCommentOwnership, function(req, res) {
 router.delete('/:comId', middleware.checkCommentOwnership, function(req, res) {
   req.comment.remove(function(err, com){
     if(err){
+      req.flash('err', err.message);
       res.redirect('back');
     }else{
+      req.flash('warning', 'You successfuly deleted a comment');
       res.redirect('/campgrounds/' + req.params.id);
     }
   });
