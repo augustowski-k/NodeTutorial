@@ -1,6 +1,31 @@
-<% include partials/header %>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>YelpCamp</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/stylesheets/home.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" type="text/javascript" async></script>
+    </head>
+    <body>
 
-<h1>Yelp Camp</h1>
-<a href="/campgrounds">View campgrounds</a>
+    <div class="container">
+      <div class="alert alert-success" role="alert" <%= flashSuccess && flashSuccess.length > 0 ? '' : 'hidden'; %>><%= flashSuccess %></div>
+      <div class="alert alert-info" role="alert" <%= flashInfo && flashInfo.length > 0 ? '' : 'hidden'; %>><%= flashInfo %></div>
+      <div class="alert alert-warning" role="alert" <%= flashWarning && flashWarning.length > 0 ? '' : 'hidden'; %>><%= flashWarning %></div>
+      <div class="alert alert-danger" role="alert" <%= flashError && flashError.length > 0 ? '' : 'hidden'; %>><%= flashError %></div>
+    </div>
+
+    <div id="landing-header">
+ 		<h1>Welcome to YelpCamp!</h1>
+		<a href="/campgrounds" class="btn btn-lg btn-success">View All Campgrounds</a>
+    </div>
+
+    <ul class="slideshow">
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
 
 <% include partials/footer %>
